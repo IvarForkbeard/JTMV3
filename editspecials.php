@@ -35,6 +35,7 @@ foreach ($days as $day) {
 }
 ?>
 <form method="POST">
+    <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>">
     <?php
     foreach ($days as $day) { ?>
         <details>

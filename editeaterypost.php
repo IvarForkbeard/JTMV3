@@ -17,7 +17,7 @@ if (verified($userVerification)) {
     ];
     $json = json_encode($eateryData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     if (!is_dir("eateries/$eateryId")) {
-        mkdir("eateries/$eateryId", 0777, true);
+        mkdir("eateries/$eateryId", 0755, true);
     }
     $check = file_put_contents("eateries/$eateryId/$eateryId.json", $json, LOCK_EX);
     if (!$check) {
@@ -27,10 +27,15 @@ if (verified($userVerification)) {
     if (isset($_FILES['images'])) {
         foreach ($_FILES['images']['tmp_name'] as $temp => $temporaryName) {
             if ($_FILES['images']['error'][$temp] === UPLOAD_ERR_OK) {
-                $fileName = "eateries/$eateryId/" . basename($_FILES['images']['name'][$temp]);
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mime = finfo_file($finfo, $temporaryName);
+                if ($mime === 'image/webp'){
+                $fileName = "eateries/$eateryId/" . uniqid() . ".webp";
                 if (!move_uploaded_file($temporaryName, $fileName)) {
-                    echo "Error while uploading: " . htmlspecialchars($_FILES['images']['name'][$temp]);
+                    echo "Error while uploading: " . $fileName;
                 }
+            } else {
+                echo "Invalid File Type";
             }
         }
     }
@@ -40,7 +45,7 @@ if (verified($userVerification)) {
             $oldFilePath = "eateries/$eateryId/$image";
             $newFilePath = "eateries/$eateryId/deprecated/$image";
             if (!is_dir("eateries/$eateryId/deprecated")) {
-                mkdir("eateries/$eateryId/deprecated", 0777, true);
+                mkdir("eateries/$eateryId/deprecated", 0755, true);
             }
             rename($oldFilePath, $newFilePath);
         }

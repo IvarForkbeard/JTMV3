@@ -15,8 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_FILES['sponsor'])) {
             if ($_FILES['sponsor']['error'] === 0) {
                 $sponsor = $_FILES['sponsor'];
-                if (!move_uploaded_file($sponsor['tmp_name'], "sponsors/" . basename($sponsor['name']))) {
-                    echo "Something went amiss, please try again";
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mime = finfo_file($finfo, $sponsor);
+                if ($mime === 'image/webp') {
+                    if (!move_uploaded_file($sponsor['tmp_name'], "sponsors/" . basename($sponsor['name']))) {
+                        echo "Something went amiss, please try again";
+                    }
                 }
             }
         }
@@ -24,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>">
     <div class='image-card' style='display: flex; flex-wrap: wrap; justify-content: space-between; width: 100%'>
         <?php
         // Show current images with boxes for treatment
@@ -41,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label> Upload New Sponsor:</label>
         <input type="file" name="sponsor" accept=".webp">
     </div>
+    <br>
     <!-- This is to enter the verification code and submit -->
     <div>
         <label> Verification Code:</label>

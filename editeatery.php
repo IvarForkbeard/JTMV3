@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include('editeaterypopulate.php');
 ?>
 <form method="POST" style="width: 80%;" enctype="multipart/form-data">
+    <input type="hidden" name = "token" value="<?= $_SESSION['token'] ?>">
     <label>Name:</label>
     <input id="name" name="name" placeholder="Eatery Name" required="required" class="edit" title="Eatery Name"
         type="text" value="<?= $name ?>">

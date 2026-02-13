@@ -1,7 +1,13 @@
 <?php
-// start a session for session variables and set the time zone for specials and stats
+// start a session for session variables and set the time zone for specials and stats and then tighten security settings
 session_start();
 date_default_timezone_set('America/Thunder_Bay');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;");
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +16,7 @@ date_default_timezone_set('America/Thunder_Bay');
     <link href="styles.css" type="text/css" rel="stylesheet" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Just the Menu Plz 3.29
+    <title>Just the Menu Plz 3.31
     </title>
 </head>
 

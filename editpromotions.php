@@ -57,6 +57,7 @@ foreach ($promotionsManifest as $name => $list) {
 }
 ?>
 <form method="POST">
+    <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>">
     <?php
     $i = 0;
     foreach ($promotionsManifest as $promotionName => $entries) { ?>
