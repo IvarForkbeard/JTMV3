@@ -15,12 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_FILES['sponsor'])) {
             if ($_FILES['sponsor']['error'] === 0) {
                 $sponsor = $_FILES['sponsor'];
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $mime = finfo_file($finfo, $sponsor);
-                if ($mime === 'image/webp') {
-                    if (!move_uploaded_file($sponsor['tmp_name'], "sponsors/" . basename($sponsor['name']))) {
-                        echo "Something went amiss, please try again";
-                    }
+                if (!move_uploaded_file($sponsor['tmp_name'], "sponsors/" . basename($sponsor['name']))) {
+                    echo "Something went amiss, please try again";
+
                 }
             }
         }

@@ -17,7 +17,7 @@ if (file_exists($jsonPath)) {
 // Populate all the relevant variables starting with name
 echo "<div class = 'eatery'>"; // Set eatery class for link transformations in CSS
 if (isset($eateryData['name']) && !empty($eateryData['name'])) {
-    $name = $eateryData['name'];
+    $name = htmlspecialchars($eateryData['name']);
 }
 if (isset($eateryData['status'])) {
     $status = $eateryData['status'];
@@ -38,7 +38,7 @@ if (isset($eateryData['status'])) {
 }
 if (isset($eateryData['link'])) {
     $link = htmlspecialchars($eateryData['link']);
-    $name = "<a href = '$link'>" . htmlspecialchars($name) . "</a>";
+    $name = "<a href = '$link'>$name</a>";
 }
 echo "<span style = 'font-size: 24pt'>" . $name . "</span>" . PHP_EOL;
 echo "<div style = 'font-size: 18pt'>"; // reduce font size for rest of text

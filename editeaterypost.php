@@ -27,33 +27,30 @@ if (verified($userVerification)) {
     if (isset($_FILES['images'])) {
         foreach ($_FILES['images']['tmp_name'] as $temp => $temporaryName) {
             if ($_FILES['images']['error'][$temp] === UPLOAD_ERR_OK) {
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $mime = finfo_file($finfo, $temporaryName);
-                if ($mime === 'image/webp'){
                 $fileName = "eateries/$eateryId/" . uniqid() . ".webp";
                 if (!move_uploaded_file($temporaryName, $fileName)) {
                     echo "Error while uploading: " . $fileName;
+                } else {
+                    echo "Invalid File Type";
                 }
-            } else {
-                echo "Invalid File Type";
             }
         }
-    }
-    // deprecate flagged images
-    if (isset($_POST['toDeprecate'])) {
-        foreach ($_POST['toDeprecate'] as $image) {
-            $oldFilePath = "eateries/$eateryId/$image";
-            $newFilePath = "eateries/$eateryId/deprecated/$image";
-            if (!is_dir("eateries/$eateryId/deprecated")) {
-                mkdir("eateries/$eateryId/deprecated", 0755, true);
+        // deprecate flagged images
+        if (isset($_POST['toDeprecate'])) {
+            foreach ($_POST['toDeprecate'] as $image) {
+                $oldFilePath = "eateries/$eateryId/$image";
+                $newFilePath = "eateries/$eateryId/deprecated/$image";
+                if (!is_dir("eateries/$eateryId/deprecated")) {
+                    mkdir("eateries/$eateryId/deprecated", 0755, true);
+                }
+                rename($oldFilePath, $newFilePath);
             }
-            rename($oldFilePath, $newFilePath);
         }
-    }
-    // delete flagged images
-    if (isset($_POST['toDelete'])) {
-        foreach ($_POST['toDelete'] as $image) {
-            unlink("eateries/$eateryId/deprecated/$image");
+        // delete flagged images
+        if (isset($_POST['toDelete'])) {
+            foreach ($_POST['toDelete'] as $image) {
+                unlink("eateries/$eateryId/deprecated/$image");
+            }
         }
     }
 }
