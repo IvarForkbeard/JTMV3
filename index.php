@@ -16,7 +16,7 @@ if (empty($_SESSION['token'])) {
     <link href="styles.css" type="text/css" rel="stylesheet" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Just the Menu Plz 3.31
+    <title>Just the Menu Plz 3.33
     </title>
 </head>
 
